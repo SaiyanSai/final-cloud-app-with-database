@@ -30,6 +30,7 @@ class LessonAdmin(admin.ModelAdmin):
 
 class QuestionAdmin(admin.ModelAdmin):
     inlines = [CourseInline]
+    list_display = ['question_title']
 
 #class CourseAdmin(admin.ModelAdmin):
 #    inlines = [QuestionInline]
