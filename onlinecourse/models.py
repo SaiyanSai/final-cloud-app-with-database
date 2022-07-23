@@ -105,6 +105,34 @@ class Enrollment(models.Model):
     # Foreign key to lesson
     # question text
     # question grade/mark
+class Question(models.Model):
+    question_title = models.CharField(max_length=200, default="title")
+    questiongrade = models.IntegerField(default=1)
+    Course = models.ForeignKey(Course, on_delete=models.CASCADE)
+    questiontext = models.CharField(max_length=200, default="Enter Question")
+    #questiongrade = models.IntegerField(default=1)
+    #course = models.ForeignKey(Course,on_delete=models.CASCADE),
+    #question_text = models.TextField(null = False, max_length=200, default="Enter you Question"),
+    #lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE),
+    
+    
+    def is_get_Score(self,selected_ids):
+        all_answers = self.choice_set.filter(is_correct=True).count()
+        selected_correct = self.choice_set.filter(is_correct=True, id__in=selected_ids).count()
+        if all_answers == selected_correct:
+           return True
+        else:
+            return False
+    
+class Choice(models.Model):
+    question = models.ForeignKey(Question, on_delete=models.CASCADE)
+    choice_text = models.CharField(default = "enter your choice here", null = False, max_length=200)
+    is_correct = models.BooleanField(default=False)
+    
+
+class Submission(models.Model):
+    enrollment = models.ForeignKey(Enrollment, on_delete=models.CASCADE)
+    selected_choices = models.ManyToManyField(Choice)
 
     # <HINT> A sample model method to calculate if learner get the score of the question
     #def is_get_score(self, selected_ids):
