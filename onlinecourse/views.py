@@ -125,6 +125,11 @@ def show_exam_result(request,course_id,submission_id):
     user = request.user
     course = get_object_or_404(Course, pk=course_id)
     submission = get_object_or_404(Submission, pk=submission_id)
+    context["course_id"] = course.id
+    context["selected_choices"] = submission.selected_choices
+    context["grade"] = 80
+    return render(request, 'onlinecourse/exam_result_bootstrap.html', context)
+
 
 # <HINT> Create a submit view to create an exam submission record for a course enrollment,
 # you may implement it based on following logic:
