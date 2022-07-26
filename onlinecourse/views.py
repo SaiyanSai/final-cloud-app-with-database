@@ -123,11 +123,21 @@ def submit(request,course_id):
 def show_exam_result(request,course_id,submission_id):
     context = {}
     user = request.user
+    selected_choice = []
     course = get_object_or_404(Course, pk=course_id)
     submission = get_object_or_404(Submission, pk=submission_id)
+    grade = 0
+    question = Question.objects.all()
+    no_of_questions=0
+    selected_choice.append(submission.selected_choices)
+    for i in question:
+        no_of_questions+=1
+        if(i.is_get_Score(submission.selected_choices.all())):
+            grade+=1
+
     context["course_id"] = course.id
-    context["selected_choices"] = submission.selected_choices
-    context["grade"] = 80
+    context["selected_choices"] = submission.selected_choices.all()
+    context["grade"] = (int)((grade/no_of_questions)*100)
     return render(request, 'onlinecourse/exam_result_bootstrap.html', context)
 
 
