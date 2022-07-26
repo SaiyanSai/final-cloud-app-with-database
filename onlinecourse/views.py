@@ -127,8 +127,8 @@ def show_exam_result(request,course_id,submission_id):
     course = get_object_or_404(Course, pk=course_id)
     submission = get_object_or_404(Submission, pk=submission_id)
     grade = 0
-    question = Question.objects.all()
-    no_of_questions=0
+    question = Question.objects.filter(course = course)
+    no_of_questions=0 
     selected_choice.append(submission.selected_choices)
     for i in question:
         no_of_questions+=1
